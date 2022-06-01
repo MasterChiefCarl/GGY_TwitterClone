@@ -10,23 +10,21 @@ import 'package:image_picker/image_picker.dart';
 class ImageService {
   static updateProfileImage() async {
     try {
-      final ImagePicker _picker = ImagePicker();
+      final ImagePicker picker = ImagePicker();
       final XFile? uncroppedImage =
-          await _picker.pickImage(source: ImageSource.gallery);
+          await picker.pickImage(source: ImageSource.gallery);
       if (uncroppedImage != null) {
         final CroppedFile? croppedFile = await ImageCropper().cropImage(
           sourcePath: uncroppedImage.path,
-          aspectRatioPresets: [
-            CropAspectRatioPreset.square,
-            CropAspectRatioPreset.ratio3x2,
-          ],
           uiSettings: [
             AndroidUiSettings(
+                showCropGrid: true,
                 toolbarTitle: 'Crop Image',
-                initAspectRatio: CropAspectRatioPreset.original,
-                lockAspectRatio: false),
+                initAspectRatio: CropAspectRatioPreset.square,
+                hideBottomControls: true,
+                lockAspectRatio: true),
             IOSUiSettings(
-              title: 'Cropper',
+              title: 'Crop Image',
             ),
           ],
         );
@@ -45,6 +43,7 @@ class ImageService {
               .collection('users')
               .doc(FirebaseAuth.instance.currentUser!.uid)
               .update({'image': publicUrl});
+          print(result);
         }
       } else {}
     } catch (e) {

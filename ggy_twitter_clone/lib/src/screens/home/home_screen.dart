@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ggy_twitter_clone/service_locators.dart';
@@ -60,37 +59,61 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(user != null ? user!.username : '. . .'),
+        backgroundColor: Theme.of(context).primaryColor,
+        title: Text(user != null ? "Welcome ${user!.username}" : '. . .',style: Theme.of(context).textTheme.headline1,),
         actions: [
           Builder(builder: (context) {
-            return IconButton(
+            // return IconButton(
+            //   onPressed: () async {
+            //     Scaffold.of(context).openEndDrawer();
+            //   },
+            //   icon: const Icon(Icons.menu),
+            // );
+            return TextButton(
               onPressed: () async {
                 Scaffold.of(context).openEndDrawer();
               },
-              icon: const Icon(Icons.menu),
+              child: AvatarImage(
+                  uid: FirebaseAuth.instance.currentUser!.uid, radius: 20),
             );
           }),
         ],
       ),
       endDrawer: Drawer(
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           children: [
             DrawerHeader(
-              child: Row(
+              child: Stack(
+                fit: StackFit.expand,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      ImageService.updateProfileImage();
-                    },
-                    child: AvatarImage(
-                        uid: FirebaseAuth.instance.currentUser!.uid),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  UserNameFromDB(uid: FirebaseAuth.instance.currentUser!.uid)
-                ],
-              ),
+                Container(
+                    color: Theme.of(context).primaryColor,
+                    width: double.infinity,
+                    height: double.infinity),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        ImageService.updateProfileImage();
+                      },
+                      child: AvatarImage(
+                        uid: FirebaseAuth.instance.currentUser!.uid,
+                        radius: 40,
+                      ),
+                    ),
+                    const SizedBox(
+                      // width: double.infinity,
+                      width: 15,
+                      height: 15,
+                    ),
+                    UserNameFromDB(
+                        uid: FirebaseAuth.instance.currentUser!.uid,
+                        fontSize: 25)
+                  ],
+                ),
+              ]),
             ),
             Expanded(
               child: Column(
@@ -137,25 +160,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      onEditingComplete: send,
                       onFieldSubmitted: (String text) {
                         send();
                       },
                       focusNode: _messageFN,
                       controller: _messageController,
+                      cursorHeight: 25,
                       decoration: const InputDecoration(
                         fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                        ),
+                        hintText: 'Input Message Here',
+                        // border: OutlineInputBorder(
+                        //   borderRadius: BorderRadius.all(
+                        //     Radius.circular(8),
+                        //   ),
+                        // ),
                       ),
                     ),
                   ),
                   IconButton(
                     icon: const Icon(
                       Icons.send,
-                      color: Colors.redAccent,
                     ),
                     onPressed: send,
                   )

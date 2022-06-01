@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:ggy_twitter_clone/service_locators.dart';
 import 'package:ggy_twitter_clone/src/controllers/auth_controllers.dart';
@@ -58,20 +57,23 @@ class _AuthScreenState extends State<AuthScreen> {
             return const Scaffold(
               body: Center(
                 child: SizedBox(
-                    width: 50, height: 50, 
+                    width: 50,
+                    height: 50,
                     child: CircularProgressIndicator(
-                      color: Colors.orange
-                    ) //Special Child that Shows a Loading Screen
+                        color: Colors
+                            .orange) //Special Child that Shows a Loading Screen
                     ),
               ),
             );
           } else {
             return Scaffold(
               appBar: AppBar(
-                title: const Text('GGY_TClone', style: TextStyle(color: Colors.black),),
-                backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                title: const Text(
+                  'GGY_TClone',
+                  style: TextStyle(color: Colors.black),
+                ),
+                backgroundColor:Theme.of(context).primaryColor,
               ),
-              backgroundColor: Colors.white,
               body: SafeArea(
                 child: Center(
                   child: SingleChildScrollView(
@@ -115,7 +117,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                         ]),
                                         Expanded(
                                           child: TabBarView(
-                                            children: [ //each child is listed in a tab (so TabBarView Widgets === TabBar && DefaultTabBarController.length)
+                                            children: [
+                                              //each child is listed in a tab (so TabBarView Widgets === TabBar && DefaultTabBarController.length)
                                               ///login (1 / 2)
                                               Column(
                                                 mainAxisAlignment:
@@ -139,6 +142,21 @@ class _AuthScreenState extends State<AuthScreen> {
                                                     },
                                                   ),
                                                   TextFormField(
+                                                    onEditingComplete: (_formKey
+                                                                .currentState
+                                                                ?.validate() ??
+                                                            false)
+                                                        ? () {
+                                                            _authController
+                                                                .login(
+                                                                    _emailCon
+                                                                        .text
+                                                                        .trim(),
+                                                                    _passCon
+                                                                        .text
+                                                                        .trim());
+                                                          }
+                                                        : null,
                                                     obscureText: true,
                                                     decoration:
                                                         const InputDecoration(
@@ -324,5 +342,3 @@ class _AuthScreenState extends State<AuthScreen> {
         });
   }
 }
-
-
