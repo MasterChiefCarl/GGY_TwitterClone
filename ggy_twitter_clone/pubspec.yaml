@@ -19,6 +19,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   get_it: ^7.2.0
+  google_fonts: ^3.0.1
   image_cropper: ^2.0.3
   image_picker: ^0.8.5+3
   simple_moment: ^1.1.1
@@ -38,3 +39,4 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+

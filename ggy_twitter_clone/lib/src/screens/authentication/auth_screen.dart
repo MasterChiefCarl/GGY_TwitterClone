@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:ggy_twitter_clone/service_locators.dart';
 import 'package:ggy_twitter_clone/src/controllers/auth_controllers.dart';
 import 'package:ggy_twitter_clone/src/controllers/navigation/navigation_service.dart';
 import 'package:ggy_twitter_clone/src/screens/home/home_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AuthScreen extends StatefulWidget {
   static const String route = "authScreen";
@@ -58,18 +58,25 @@ class _AuthScreenState extends State<AuthScreen> {
             return const Scaffold(
               body: Center(
                 child: SizedBox(
-                    width: 50, height: 50, 
+                    width: 50,
+                    height: 50,
                     child: CircularProgressIndicator(
-                      color: Colors.orange
-                    ) //Special Child that Shows a Loading Screen
+                        color: Colors
+                            .lightBlueAccent) //Special Child that Shows a Loading Screen
                     ),
               ),
             );
           } else {
             return Scaffold(
               appBar: AppBar(
-                title: const Text('GGY_TClone', style: TextStyle(color: Colors.black),),
-                backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                backgroundColor: Colors.lightBlueAccent,
+                title: Text(
+                  'GGY_TClone',
+                  style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(fontSize: 28)),
+                ),
+                // backgroundColor: const Color(0xFF303030),
+                centerTitle: true,
               ),
               backgroundColor: Colors.white,
               body: SafeArea(
@@ -97,25 +104,34 @@ class _AuthScreenState extends State<AuthScreen> {
                                     initialIndex: 0,
                                     child: Column(
                                       children: [
-                                        const TabBar(tabs: [
+                                        TabBar(indicatorWeight: 5, tabs: [
                                           Tab(
                                             child: Text(
                                               'Log In',
-                                              style: TextStyle(
-                                                  color: Colors.black87),
+                                              style: GoogleFonts.poppins(
+                                                textStyle: const TextStyle(
+                                                  fontSize: 16,
+                                                ),
+                                                color: Colors.black,
+                                              ),
                                             ),
                                           ),
                                           Tab(
                                             child: Text(
                                               'Register',
-                                              style: TextStyle(
-                                                  color: Colors.black87),
+                                              style: GoogleFonts.poppins(
+                                                textStyle: const TextStyle(
+                                                  fontSize: 16,
+                                                ),
+                                                color: Colors.black,
+                                              ),
                                             ),
                                           )
                                         ]),
                                         Expanded(
                                           child: TabBarView(
-                                            children: [ //each child is listed in a tab (so TabBarView Widgets === TabBar && DefaultTabBarController.length)
+                                            children: [
+                                              //each child is listed in a tab (so TabBarView Widgets === TabBar && DefaultTabBarController.length)
                                               ///login (1 / 2)
                                               Column(
                                                 mainAxisAlignment:
@@ -171,21 +187,33 @@ class _AuthScreenState extends State<AuthScreen> {
                                                         : null,
                                                     style: ElevatedButton
                                                         .styleFrom(
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          16.0),
-                                                            ),
-                                                            primary: (_formKey
-                                                                        .currentState
-                                                                        ?.validate() ??
-                                                                    false)
-                                                                ? const Color(
-                                                                    0xFF303030)
-                                                                : Colors.grey),
-                                                    child: const Text('Log in'),
+                                                        shape:
+                                                        RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .circular(
+                                                              20.0),
+                                                        ),
+                                                        fixedSize:
+                                                        const Size(
+                                                            240, 50),
+                                                        primary: (_formKey
+                                                            .currentState
+                                                            ?.validate() ??
+                                                            false)
+                                                            ? Colors
+                                                            .lightBlueAccent
+                                                            : Colors.grey),
+                                                    child: Text(
+                                                      'Log in',
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        textStyle:
+                                                            const TextStyle(
+                                                          fontSize: 15,
+                                                        ),
+                                                      ),
+                                                    ),
                                                   )
                                                 ],
                                               ),
@@ -289,17 +317,25 @@ class _AuthScreenState extends State<AuthScreen> {
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
-                                                                          16.0),
+                                                                          20.0),
                                                             ),
+                                                            fixedSize:
+                                                                const Size(
+                                                                    240, 50),
                                                             primary: (_formKey
                                                                         .currentState
                                                                         ?.validate() ??
                                                                     false)
-                                                                ? const Color(
-                                                                    0xFF303030)
+                                                                ? Colors
+                                                                    .lightBlueAccent
                                                                 : Colors.grey),
-                                                    child:
-                                                        const Text('Register'),
+                                                    child: Text('Register',
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                textStyle:
+                                                                    const TextStyle(
+                                                          fontSize: 15,
+                                                        ))),
                                                   )
                                                 ],
                                               ),
@@ -324,5 +360,3 @@ class _AuthScreenState extends State<AuthScreen> {
         });
   }
 }
-
-
