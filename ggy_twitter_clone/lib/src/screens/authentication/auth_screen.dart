@@ -138,8 +138,9 @@ class _AuthScreenState extends State<AuthScreen> {
                                                         .spaceEvenly,
                                                 children: [
                                                   Text(_authController
-                                                          .error?.message ??
-                                                      ''),
+                                                          .error?.message != null || _authController.errorS !=null?
+                                                      "${_authController
+                                                          .error?.message ?? ''}${_authController.errorS ?? ''}":''),
                                                   TextFormField(
                                                     decoration:
                                                         const InputDecoration(
@@ -220,6 +221,48 @@ class _AuthScreenState extends State<AuthScreen> {
                                                             : Colors.grey),
                                                     child: Text(
                                                       'Log in',
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        textStyle:
+                                                            const TextStyle(
+                                                          fontSize: 15,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                   ElevatedButton(
+                                                    onPressed: (_formKey
+                                                                .currentState
+                                                                ?.validate() ??
+                                                            false)
+                                                        ? () {
+                                                            _authController
+                                                                .changeFogotPassword(_emailCon
+                                                                        .text
+                                                                        .trim());
+                                                          }
+                                                        : null,
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                        shape:
+                                                        RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .circular(
+                                                              20.0),
+                                                        ),
+                                                        fixedSize:
+                                                        const Size(
+                                                            240, 50),
+                                                        primary: (_formKey
+                                                            .currentState
+                                                            ?.validate() ??
+                                                            false)
+                                                            ? Colors
+                                                            .redAccent
+                                                            : Colors.grey),
+                                                    child: Text(
+                                                      'Forgot Password',
                                                       style:
                                                           GoogleFonts.poppins(
                                                         textStyle:

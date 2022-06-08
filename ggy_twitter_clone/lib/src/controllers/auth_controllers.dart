@@ -15,6 +15,7 @@ class AuthController with ChangeNotifier {
   late StreamSubscription authStream;
   User? currentUser;
   FirebaseAuthException? error;
+  String? errorS;
   bool working = true;
   final NavigationService nav = locator<NavigationService>();
   AuthController() {
@@ -25,6 +26,26 @@ class AuthController with ChangeNotifier {
   dispose() {
     authStream.cancel();
     super.dispose();
+  }
+
+  Future changeFogotPassword(String email) async {
+    try {
+      working = true;
+      notifyListeners();
+      var result = await _auth.sendPasswordResetEmail(email: email);
+
+      working = false;
+      errorS = "Reset has been sent successfully! Please Check your Inbox <3";
+
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+      print(e.code);
+      working = false;
+      currentUser = null;
+      error = e;
+      notifyListeners();
+    }
   }
 
   handleAuthUserChanges(User? event) {
@@ -79,27 +100,26 @@ class AuthController with ChangeNotifier {
       {required String email,
       required String password,
       required String username}) async {
-   try {
+    try {
       working = true;
       notifyListeners();
       UserCredential createdUser = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      if(createdUser.user!=null){
+      if (createdUser.user != null) {
         ChatUser userModel = ChatUser(createdUser.user!.uid, username, email,
             '', Timestamp.now(), Timestamp.now());
         return FirebaseFirestore.instance
             .collection('users')
             .doc(userModel.uid)
             .set(userModel.json);
-
       }
-    } on FirebaseAuthException catch(e){
-     print(e.message);
-     print(e.code);
-     working = false;
-     currentUser = null;
-     error = e;
-     notifyListeners();
-   }
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+      print(e.code);
+      working = false;
+      currentUser = null;
+      error = e;
+      notifyListeners();
+    }
   }
 }
