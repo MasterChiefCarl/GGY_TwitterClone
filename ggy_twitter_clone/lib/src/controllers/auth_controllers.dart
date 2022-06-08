@@ -15,6 +15,7 @@ class AuthController with ChangeNotifier {
   late StreamSubscription authStream;
   User? currentUser;
   FirebaseAuthException? error;
+  String? errorS;
   bool working = true;
   final NavigationService nav = locator<NavigationService>();
   AuthController() {
@@ -87,6 +88,8 @@ class AuthController with ChangeNotifier {
       if(createdUser.user!=null){
         ChatUser userModel = ChatUser(createdUser.user!.uid, username, email,
             '', Timestamp.now(), Timestamp.now());
+
+        errorS = "Created account Sucessfully! Logging In...."; 
         return FirebaseFirestore.instance
             .collection('users')
             .doc(userModel.uid)
@@ -101,5 +104,28 @@ class AuthController with ChangeNotifier {
      error = e;
      notifyListeners();
    }
+  }
+
+  flush() {
+    errorS = "";
+    notifyListeners();
+  }
+
+  Future changeFogotPassword(String email) async {
+    try {
+      working = true;
+      notifyListeners();
+      await _auth.sendPasswordResetEmail(email: email);
+      working = false;
+      errorS = "Reset has been sent successfully! Please Check your Inbox <3";
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+      print(e.code);
+      working = false;
+      currentUser = null;
+      error = e;
+      notifyListeners();
+    }
   }
 }

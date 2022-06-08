@@ -95,6 +95,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   key: _formKey,
                                   onChanged: () {
                                     _formKey.currentState?.validate();
+                                    _authController.flush();
                                     if (mounted) {
                                       setState(() {});
                                     }
@@ -138,9 +139,14 @@ class _AuthScreenState extends State<AuthScreen> {
                                                     MainAxisAlignment
                                                         .spaceEvenly,
                                                 children: [
-                                                  Text(_authController
-                                                          .error?.message ??
-                                                      ''),
+                                                  Text(_authController.error
+                                                                  ?.message !=
+                                                              null ||
+                                                          _authController
+                                                                  .errorS !=
+                                                              null
+                                                      ? "${_authController.error?.message ?? ''}${_authController.errorS ?? ''}"
+                                                      : ''),
                                                   TextFormField(
                                                     decoration:
                                                         const InputDecoration(
@@ -187,25 +193,71 @@ class _AuthScreenState extends State<AuthScreen> {
                                                         : null,
                                                     style: ElevatedButton
                                                         .styleFrom(
-                                                        shape:
-                                                        RoundedRectangleBorder(
-                                                          borderRadius:
-                                                          BorderRadius
-                                                              .circular(
-                                                              20.0),
-                                                        ),
-                                                        fixedSize:
-                                                        const Size(
-                                                            240, 50),
-                                                        primary: (_formKey
-                                                            .currentState
-                                                            ?.validate() ??
-                                                            false)
-                                                            ? Colors
-                                                            .lightBlueAccent
-                                                            : Colors.grey),
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20.0),
+                                                            ),
+                                                            fixedSize:
+                                                                const Size(
+                                                                    240, 50),
+                                                            primary: (_formKey
+                                                                        .currentState
+                                                                        ?.validate() ??
+                                                                    false)
+                                                                ? Colors
+                                                                    .lightBlueAccent
+                                                                : Theme.of(context).colorScheme.onSurface),
                                                     child: Text(
                                                       'Log in',
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        textStyle:
+                                                            const TextStyle(
+                                                          fontSize: 15,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  ElevatedButton(
+                                                    onPressed: (_emailCon.text
+                                                                    .trim() ==
+                                                                ''
+                                                            ? false
+                                                            : true)
+                                                        ? () {
+                                                            _authController
+                                                                .changeFogotPassword(
+                                                                    _emailCon
+                                                                        .text
+                                                                        .trim());
+                                                          }
+                                                        : null,
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20.0),
+                                                            ),
+                                                            fixedSize:
+                                                                const Size(
+                                                                    240, 50),
+                                                            primary: (_emailCon
+                                                                            .text
+                                                                            .trim() ==
+                                                                        ''
+                                                                    ? false
+                                                                    : true)
+                                                                ? Colors
+                                                                    .redAccent
+                                                                : Theme.of(context).colorScheme.onSurface),
+                                                    child: Text(
+                                                      'Forgot Password?',
                                                       style:
                                                           GoogleFonts.poppins(
                                                         textStyle:
@@ -224,9 +276,14 @@ class _AuthScreenState extends State<AuthScreen> {
                                                     MainAxisAlignment
                                                         .spaceEvenly,
                                                 children: [
-                                                  Text(_authController
-                                                          .error?.message ??
-                                                      ''),
+                                                  Text(_authController.error
+                                                                  ?.message !=
+                                                              null ||
+                                                          _authController
+                                                                  .errorS !=
+                                                              null
+                                                      ? "${_authController.error?.message ?? ''}${_authController.errorS ?? ''}"
+                                                      : ''),
                                                   TextFormField(
                                                     decoration:
                                                         const InputDecoration(
@@ -328,7 +385,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                                                     false)
                                                                 ? Colors
                                                                     .lightBlueAccent
-                                                                : Colors.grey),
+                                                                : Theme.of(context).colorScheme.onSurface),
                                                     child: Text('Register',
                                                         style:
                                                             GoogleFonts.poppins(
