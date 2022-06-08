@@ -78,7 +78,6 @@ class _AuthScreenState extends State<AuthScreen> {
                 // backgroundColor: const Color(0xFF303030),
                 centerTitle: true,
               ),
-              backgroundColor: Colors.white,
               body: SafeArea(
                 child: Center(
                   child: SingleChildScrollView(
@@ -155,6 +154,21 @@ class _AuthScreenState extends State<AuthScreen> {
                                                     },
                                                   ),
                                                   TextFormField(
+                                                    onEditingComplete: (_formKey
+                                                                .currentState
+                                                                ?.validate() ??
+                                                            false)
+                                                        ? () {
+                                                            _authController
+                                                                .login(
+                                                                    _emailCon
+                                                                        .text
+                                                                        .trim(),
+                                                                    _passCon
+                                                                        .text
+                                                                        .trim());
+                                                          }
+                                                        : null,
                                                     obscureText: true,
                                                     decoration:
                                                         const InputDecoration(

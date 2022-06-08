@@ -149,6 +149,6 @@ class NavigationService {
 
   log(String message, {String? origin}) {
     developer.log(message,
-        name: 'NavigationService${origin != null ? '/' + origin : ''}');
+        name: 'NavigationService${origin != null ? '/$origin' : ''}');
   }
 }
