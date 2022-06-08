@@ -1,14 +1,12 @@
+
 import 'package:flutter/material.dart';
 import 'package:ggy_twitter_clone/src/models/chat_message_model.dart';
-
 class ChatEditingDialog extends StatefulWidget {
   final ChatMessage chat;
   const ChatEditingDialog({required this.chat, Key? key}) : super(key: key);
-
   @override
   State<ChatEditingDialog> createState() => _ChatEditingDialogState();
 }
-
 class _ChatEditingDialogState extends State<ChatEditingDialog> {
   late TextEditingController tCon;
   @override
@@ -16,7 +14,6 @@ class _ChatEditingDialogState extends State<ChatEditingDialog> {
     tCon = TextEditingController(text: widget.chat.message);
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Dialog(

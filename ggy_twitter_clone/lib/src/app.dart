@@ -16,19 +16,25 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primaryColor: Colors.orange,
           scaffoldBackgroundColor: Colors.white,
-          colorScheme: const ColorScheme(
+          textTheme:  const TextTheme(
+            headline1: TextStyle(
+                fontSize: 25.0,
+                fontWeight: FontWeight.w400,
+                color: Colors.black),
+          ),
+          colorScheme:  ColorScheme(
               brightness: Brightness.light,
-              primary: Colors.blue,
-              onPrimary: Colors.white,
-              secondary: Colors.blueAccent,
+              primary: Theme.of(context).primaryColor,
+              onPrimary: Colors.black,
+              secondary: Colors.grey,
               onSecondary: Colors.white,
               error: Colors.black,
               onError: Colors.red,
-              background: Color.fromARGB(255, 192, 192, 192),
-              onBackground: Colors.black,
+              background: Theme.of(context).scaffoldBackgroundColor,
+              onBackground: Colors.white,
               surface: Colors.red,
-              onSurface: Colors.grey,
-              shadow: Color.fromARGB(255, 0, 0, 0)),
+              onSurface: Colors.red,
+              shadow: const Color.fromARGB(255, 0, 0, 0)),
           iconTheme: const IconThemeData(
               color: Colors.red, size: 30)),
       debugShowCheckedModeBanner: false,

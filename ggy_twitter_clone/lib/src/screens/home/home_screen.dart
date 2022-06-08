@@ -9,24 +9,19 @@ import 'package:ggy_twitter_clone/src/models/chat_user_model.dart';
 import 'package:ggy_twitter_clone/src/services/image_service.dart';
 import 'package:ggy_twitter_clone/src/widgets/avatars.dart';
 import 'package:ggy_twitter_clone/src/widgets/chat_card.dart';
-
 class HomeScreen extends StatefulWidget {
   static const String route = 'home-screen';
   const HomeScreen({Key? key}) : super(key: key);
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
-
 class _HomeScreenState extends State<HomeScreen> {
   final AuthController _auth = locator<AuthController>();
   final ChatController _chatController = ChatController();
   final TextEditingController _messageController = TextEditingController();
   final FocusNode _messageFN = FocusNode();
   final ScrollController _scrollController = ScrollController();
-
   ChatUser? user;
-
   @override
   void initState() {
     ChatUser.fromUid(uid: FirebaseAuth.instance.currentUser!.uid).then((value) {
@@ -39,14 +34,12 @@ class _HomeScreenState extends State<HomeScreen> {
     _chatController.addListener(scrollToBottom);
     super.initState();
   }
-
   scrollToBottom() async {
     await Future.delayed(const Duration(milliseconds: 250));
     print('scrolling to bottom');
     _scrollController.animateTo(_scrollController.position.maxScrollExtent,
         curve: Curves.easeIn, duration: const Duration(milliseconds: 250));
   }
-
   @override
   void dispose() {
     _chatController.removeListener(scrollToBottom);
@@ -55,42 +48,65 @@ class _HomeScreenState extends State<HomeScreen> {
     _messageController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(user != null ? user!.username : '. . .'),
+        backgroundColor: Theme.of(context).primaryColor,
+        title: Text(user != null ? "Welcome ${user!.username}" : '. . .',style: Theme.of(context).textTheme.headline1,),
         actions: [
           Builder(builder: (context) {
-            return IconButton(
+            // return IconButton(
+            //   onPressed: () async {
+            //     Scaffold.of(context).openEndDrawer();
+            //   },
+            //   icon: const Icon(Icons.menu),
+            // );
+            return TextButton(
               onPressed: () async {
                 Scaffold.of(context).openEndDrawer();
               },
-              icon: const Icon(Icons.menu),
+              child: AvatarImage(
+                  uid: FirebaseAuth.instance.currentUser!.uid, radius: 20),
             );
           }),
         ],
       ),
       endDrawer: Drawer(
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           children: [
             DrawerHeader(
-              child: Row(
+              child: Stack(
+                fit: StackFit.expand,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      ImageService.updateProfileImage();
-                    },
-                    child: AvatarImage(
-                        uid: FirebaseAuth.instance.currentUser!.uid),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  UserNameFromDB(uid: FirebaseAuth.instance.currentUser!.uid)
-                ],
-              ),
+                Container(
+                    color: Theme.of(context).primaryColor,
+                    width: double.infinity,
+                    height: double.infinity),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        ImageService.updateProfileImage();
+                      },
+                      child: AvatarImage(
+                        uid: FirebaseAuth.instance.currentUser!.uid,
+                        radius: 40,
+                      ),
+                    ),
+                    const SizedBox(
+                      // width: double.infinity,
+                      width: 15,
+                      height: 15,
+                    ),
+                    UserNameFromDB(
+                        uid: FirebaseAuth.instance.currentUser!.uid,
+                        fontSize: 25)
+                  ],
+                ),
+              ]),
             ),
             Expanded(
               child: Column(
@@ -137,25 +153,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      onEditingComplete: send,
                       onFieldSubmitted: (String text) {
                         send();
                       },
                       focusNode: _messageFN,
                       controller: _messageController,
+                      cursorHeight: 25,
                       decoration: const InputDecoration(
                         fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                        ),
+                        hintText: 'Input Message Here',
+                        // border: OutlineInputBorder(
+                        //   borderRadius: BorderRadius.all(
+                        //     Radius.circular(8),
+                        //   ),
+                        // ),
                       ),
                     ),
                   ),
                   IconButton(
                     icon: const Icon(
                       Icons.send,
-                      color: Colors.redAccent,
                     ),
                     onPressed: send,
                   )
@@ -167,7 +185,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
   send() {
     _messageFN.unfocus();
     if (_messageController.text.isNotEmpty) {
