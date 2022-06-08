@@ -28,29 +28,9 @@ class AuthController with ChangeNotifier {
     super.dispose();
   }
 
-  Future changeFogotPassword(String email) async {
-    try {
-      working = true;
-      notifyListeners();
-      var result = await _auth.sendPasswordResetEmail(email: email);
-
-      working = false;
-      errorS = "Reset has been sent successfully! Please Check your Inbox <3";
-
-      notifyListeners();
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
-      print(e.code);
-      working = false;
-      currentUser = null;
-      error = e;
-      notifyListeners();
-    }
-  }
-
   handleAuthUserChanges(User? event) {
     ///if no user exists, pop everything and show the AuthScreen
-    if (event == null) {
+    if (event == null || currentUser == null) {
       print('no logged in user');
       nav.popUntilFirst();
       nav.pushReplacementNamed(AuthScreen.route);
@@ -113,6 +93,30 @@ class AuthController with ChangeNotifier {
             .doc(userModel.uid)
             .set(userModel.json);
       }
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+      print(e.code);
+      working = false;
+      currentUser = null;
+      error = e;
+      notifyListeners();
+    }
+  }
+
+  void flush() {
+    errorS = "";
+    notifyListeners();
+  }
+
+  Future changeFogotPassword(String email) async {
+    try {
+      working = true;
+      notifyListeners();
+      await _auth.sendPasswordResetEmail(email: email);
+
+      working = false;
+      errorS = "Reset has been sent successfully! Please Check your Inbox <3";
+      notifyListeners();
     } on FirebaseAuthException catch (e) {
       print(e.message);
       print(e.code);

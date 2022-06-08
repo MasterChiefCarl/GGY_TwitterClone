@@ -21,15 +21,15 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _emailCon = TextEditingController(),
       _passCon = TextEditingController(),
       _pass2Con = TextEditingController(),
-      _usernameCon = TextEditingController();
+      _usernameCon = TextEditingController(), _handleNameCon= TextEditingController();
   final AuthController _authController = locator<AuthController>();
 
-  String prompts = '';
 
   @override
   void initState() {
     _authController.addListener(handleLogin);
     super.initState();
+    _authController.flush();
   }
 
   handleLogin() {
@@ -40,6 +40,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   void dispose() {
+    _authController.flush();
     _emailCon.dispose();
     _passCon.dispose();
     _pass2Con.dispose();
@@ -336,13 +337,28 @@ class _AuthScreenState extends State<AuthScreen> {
                                                     decoration:
                                                         const InputDecoration(
                                                       hintText:
-                                                          'Enter username',
+                                                          'Enter your Username',
                                                     ),
                                                     controller: _usernameCon,
                                                     validator: (value) {
                                                       if (value == null ||
                                                           value.isEmpty) {
                                                         return 'Please enter username';
+                                                      }
+                                                      return null;
+                                                    },
+                                                  ),
+                                                  TextFormField(
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      hintText:
+                                                          'Enter your Handle Name (Appearance Name)',
+                                                    ),
+                                                    controller: _handleNameCon,
+                                                    validator: (value) {
+                                                      if (value == null ||
+                                                          value.isEmpty) {
+                                                        return 'Please enter handle name';
                                                       }
                                                       return null;
                                                     },
