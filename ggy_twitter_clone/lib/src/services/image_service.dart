@@ -1,31 +1,36 @@
-
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+
 class ImageService {
   static updateProfileImage() async {
     try {
-      final ImagePicker picker = ImagePicker();
+      final ImagePicker _picker = ImagePicker();
       final XFile? uncroppedImage =
-          await picker.pickImage(source: ImageSource.gallery);
+          await _picker.pickImage(source: ImageSource.gallery);
       if (uncroppedImage != null) {
         final CroppedFile? croppedFile = await ImageCropper().cropImage(
           sourcePath: uncroppedImage.path,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio3x2,
+          ],
           uiSettings: [
             AndroidUiSettings(
-                showCropGrid: true,
                 toolbarTitle: 'Crop Image',
-                initAspectRatio: CropAspectRatioPreset.square,
-                hideBottomControls: true,
-                lockAspectRatio: true),
+                initAspectRatio: CropAspectRatioPreset.original,
+                lockAspectRatio: false),
             IOSUiSettings(
-              title: 'Crop Image',
+              title: 'Cropper',
             ),
           ],
         );
+
         if (croppedFile != null) {
           final storageRef = FirebaseStorage.instance.ref();
           final profileRef = storageRef.child(
@@ -40,7 +45,6 @@ class ImageService {
               .collection('users')
               .doc(FirebaseAuth.instance.currentUser!.uid)
               .update({'image': publicUrl});
-          print(result);
         }
       } else {}
     } catch (e) {
