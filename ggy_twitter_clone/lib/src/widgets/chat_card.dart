@@ -5,15 +5,12 @@ import 'package:ggy_twitter_clone/src/models/chat_message_model.dart';
 import 'package:ggy_twitter_clone/src/widgets/avatars.dart';
 import 'package:ggy_twitter_clone/src/widgets/edit_dialogue.dart';
 import 'package:simple_moment/simple_moment.dart';
-
 class ChatCard extends StatelessWidget {
   const ChatCard({
     Key? key,
     required this.chat,
   }) : super(key: key);
-
   final ChatMessage chat;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -81,6 +78,7 @@ class ChatCard extends StatelessWidget {
                             const BorderRadius.all(Radius.circular(8)),
                         color: chat.sentBy ==
                                 FirebaseAuth.instance.currentUser!.uid
+                                // ?Colors.orange:Colors.white,
                             ? Theme.of(context).colorScheme.primary
                             : Theme.of(context).colorScheme.onBackground,
                         boxShadow: [
