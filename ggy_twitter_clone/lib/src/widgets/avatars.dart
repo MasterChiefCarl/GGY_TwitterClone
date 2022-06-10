@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ggy_twitter_clone/src/models/chat_user_model.dart';
 
+
 class UserNameFromDB extends StatelessWidget {
   final String uid;
   final double fontSize;
@@ -20,6 +21,26 @@ class UserNameFromDB extends StatelessWidget {
         });
   }
 }
+class EmailFromDB extends StatelessWidget {
+  final String uid;
+  final double fontSize;
+  const EmailFromDB({required this.uid, Key? key, this.fontSize = 15})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<ChatUser>(
+        stream: ChatUser.fromUidStream(uid: uid),
+        builder: (context, AsyncSnapshot<ChatUser?> snap) {
+          if (snap.error != null || !snap.hasData) {
+            return const Text('. . .');
+          } else {
+            return Text(snap.data!.email,
+                style: TextStyle(fontSize: fontSize));
+          }
+        });
+  }
+}
+
 
 class AvatarImage extends StatelessWidget {
   final String uid;

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:ggy_twitter_clone/src/models/chat_message_model.dart';
+
 class ChatEditingDialog extends StatefulWidget {
   final ChatMessage chat;
   const ChatEditingDialog({required this.chat, Key? key}) : super(key: key);

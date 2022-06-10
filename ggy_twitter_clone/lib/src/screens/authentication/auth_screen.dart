@@ -50,6 +50,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // _authController.flush();
     return AnimatedBuilder(
         animation: _authController,
         builder: (context, Widget? w) {
@@ -95,7 +96,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                   key: _formKey,
                                   onChanged: () {
                                     _formKey.currentState?.validate();
-                                    _authController.flush();
                                     if (mounted) {
                                       setState(() {});
                                     }

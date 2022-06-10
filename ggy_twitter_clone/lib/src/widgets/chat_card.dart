@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ggy_twitter_clone/src/models/chat_message_model.dart';
 import 'package:ggy_twitter_clone/src/widgets/avatars.dart';
-import 'package:ggy_twitter_clone/src/widgets/edit_dialogue.dart';
+import 'package:ggy_twitter_clone/src/widgets/dialogue.dart';
 import 'package:simple_moment/simple_moment.dart';
 class ChatCard extends StatelessWidget {
   const ChatCard({
