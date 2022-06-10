@@ -54,11 +54,20 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: _children[_selectedIndex],
       bottomNavigationBar: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 50,vertical: 25),
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.lightBlueAccent,width: 9),
-            borderRadius: const BorderRadius.all(Radius.circular(10))),
-            
+        margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 0), // adjusts the spacing of the bar from bottom
+        padding: const EdgeInsets.fromLTRB(5, 25, 5, 0),
+        decoration: BoxDecoration( //customization to the bottom bar
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(25),
+          // boxShadow: [
+          //   BoxShadow(
+          //       color: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
+          //       spreadRadius: 2,
+          //       blurRadius: 7,
+          //       offset: const Offset(3, 3)),
+          // ],
+          border: Border.all(width: 1, color: Colors.white)
+        ),
         child: BottomAppBar(
           elevation: 0,
           child: SizedBox(
@@ -106,4 +115,4 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-
+// hey ash the iconbuttonbar i moved it under widgets 

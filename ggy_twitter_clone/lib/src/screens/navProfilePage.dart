@@ -81,7 +81,7 @@ class _profileState extends State<navProfilePage> {
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                   fixedSize: const Size(240, 50),
                   primary: Colors.lightBlueAccent,
@@ -100,7 +100,7 @@ class _profileState extends State<navProfilePage> {
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                   fixedSize: const Size(240, 50),
                   primary: Colors.lightBlueAccent,
@@ -119,7 +119,7 @@ class _profileState extends State<navProfilePage> {
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                   fixedSize: const Size(240, 50),
                   primary: Colors.lightBlueAccent,
@@ -138,7 +138,7 @@ class _profileState extends State<navProfilePage> {
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                   fixedSize: const Size(240, 50),
                   primary: Colors.blue,
@@ -159,7 +159,7 @@ class _profileState extends State<navProfilePage> {
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                   fixedSize: const Size(240, 50),
                   primary: Colors.red,

@@ -13,7 +13,7 @@ class IconBottomBar extends StatelessWidget {
   final bool selected;
   final Function() onPressed;
 
-  final primaryColor = const Color(0xffff6363);
+  final primaryColor = Colors.lightBlueAccent;
 
   @override
   Widget build(BuildContext context) {
