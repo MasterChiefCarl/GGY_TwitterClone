@@ -4,6 +4,7 @@ import 'package:ggy_twitter_clone/service_locators.dart';
 import 'package:ggy_twitter_clone/src/controllers/auth_controllers.dart';
 import 'package:ggy_twitter_clone/src/services/image_service.dart';
 import 'package:ggy_twitter_clone/src/widgets/avatars.dart';
+import 'package:ggy_twitter_clone/src/widgets/dialogue.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class navProfilePage extends StatefulWidget {
@@ -67,6 +68,9 @@ class _profileState extends State<navProfilePage> {
                   UserNameFromDB(
                       uid: FirebaseAuth.instance.currentUser!.uid,
                       fontSize: 25),
+                  HandleFromDB(
+                      uid: FirebaseAuth.instance.currentUser!.uid,
+                      fontSize: 15),
                   EmailFromDB(
                       uid: FirebaseAuth.instance.currentUser!.uid,
                       fontSize: 10),
@@ -102,7 +106,11 @@ class _profileState extends State<navProfilePage> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _editUsername();
+                    setState(() {
+                    });
+                  },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
@@ -121,7 +129,11 @@ class _profileState extends State<navProfilePage> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _editHandlename();
+                    setState(() {
+                    });
+                  },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
@@ -131,26 +143,7 @@ class _profileState extends State<navProfilePage> {
                     // : Theme.of(context).colorScheme.onSurface),
                   ),
                   child: Text(
-                    'Change Email',
-                    style: GoogleFonts.poppins(
-                      textStyle: const TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    fixedSize: const Size(240, 50),
-                    primary: Colors.blue,
-                    // : Theme.of(context).colorScheme.onSurface),
-                  ),
-                  child: Text(
-                    'Change Password',
+                    'Change Handle Name',
                     style: GoogleFonts.poppins(
                       textStyle: const TextStyle(
                         fontSize: 15,
@@ -185,6 +178,26 @@ class _profileState extends State<navProfilePage> {
         ]),
       ),
     ));
+  }
+
+  Future<void> _editUsername() async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return UsernameEditingDialog(
+            uid: FirebaseAuth.instance.currentUser!.uid,
+          );
+        });
+  }
+
+  Future<void> _editHandlename() async {
+    showDialog(
+        context: context,
+        builder: (dCon) {
+          return HandleNameEditingDialog(
+            uid: FirebaseAuth.instance.currentUser!.uid,
+          );
+        });
   }
 
   Future<void> _logoutDialogue() async {

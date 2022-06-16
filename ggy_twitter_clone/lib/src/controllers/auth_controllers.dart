@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'package:random_string_generator/random_string_generator.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../service_locators.dart';
-import '../models/chat_user_model.dart';
+import '../models/user_account_model.dart';
 import '../screens/authentication/auth_screen.dart';
 import '../screens/home/home_screen.dart';
 import 'navigation/navigation_service.dart';
@@ -79,31 +80,34 @@ class AuthController with ChangeNotifier {
   Future register(
       {required String email,
       required String password,
-      required String username}) async {
-   try {
+      required String username,
+      required String handle}) async {
+    try {
+      var generator = RandomStringGenerator(
+        fixedLength: 4,
+      );
       working = true;
       notifyListeners();
       UserCredential createdUser = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      if(createdUser.user!=null){
-        ChatUser userModel = ChatUser(createdUser.user!.uid, username, email,
-            '', Timestamp.now(), Timestamp.now());
+      if (createdUser.user != null) {
+        AccUser userModel = AccUser(createdUser.user!.uid, username, email, '',
+            '$handle*${generator.generate()}', Timestamp.now(), Timestamp.now());
 
-        errorS = "Created account Sucessfully! Logging In...."; 
+        errorS = "Created account Sucessfully! Logging In....";
         return FirebaseFirestore.instance
             .collection('users')
             .doc(userModel.uid)
             .set(userModel.json);
-
       }
-    } on FirebaseAuthException catch(e){
-     print(e.message);
-     print(e.code);
-     working = false;
-     currentUser = null;
-     error = e;
-     notifyListeners();
-   }
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+      print(e.code);
+      working = false;
+      currentUser = null;
+      error = e;
+      notifyListeners();
+    }
   }
 
   flush() {
@@ -127,5 +131,15 @@ class AuthController with ChangeNotifier {
       error = e;
       notifyListeners();
     }
+  }
+  Future updateHandle({required String uid, required String newHandle}){
+    return FirebaseFirestore.instance.collection('users').doc(uid).update({
+      'handle': newHandle
+    });
+  }
+  Future updateUsername({required String uid, required String newUsername}){
+    return FirebaseFirestore.instance.collection('users').doc(uid).update({
+      'username': newUsername
+    });
   }
 }

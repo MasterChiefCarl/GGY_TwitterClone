@@ -23,6 +23,7 @@ dependencies:
   google_fonts: ^3.0.1
   image_cropper: ^2.0.3
   image_picker: ^0.8.5+3
+  random_string_generator: ^2.0.0
   simple_moment: ^1.1.1
 
 dev_dependencies:

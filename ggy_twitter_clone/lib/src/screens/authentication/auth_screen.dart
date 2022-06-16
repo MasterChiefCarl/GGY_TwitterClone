@@ -21,7 +21,8 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _emailCon = TextEditingController(),
       _passCon = TextEditingController(),
       _pass2Con = TextEditingController(),
-      _usernameCon = TextEditingController();
+      _usernameCon = TextEditingController(),
+      _handlenameCon = TextEditingController();
   final AuthController _authController = locator<AuthController>();
 
   String prompts = '';
@@ -87,7 +88,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       padding: const EdgeInsets.all(16),
                       child: Center(
                         child: AspectRatio(
-                          aspectRatio: 4 / 5,
+                          aspectRatio: 2.5 / 4,
                           child: Card(
                             child: Container(
                               padding: const EdgeInsets.all(16),
@@ -209,7 +210,10 @@ class _AuthScreenState extends State<AuthScreen> {
                                                                     false)
                                                                 ? Colors
                                                                     .lightBlueAccent
-                                                                : Theme.of(context).colorScheme.onSurface),
+                                                                : Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .onSurface),
                                                     child: Text(
                                                       'Log in',
                                                       style:
@@ -255,7 +259,10 @@ class _AuthScreenState extends State<AuthScreen> {
                                                                     : true)
                                                                 ? Colors
                                                                     .redAccent
-                                                                : Theme.of(context).colorScheme.onSurface),
+                                                                : Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .onSurface),
                                                     child: Text(
                                                       'Forgot Password?',
                                                       style:
@@ -347,6 +354,21 @@ class _AuthScreenState extends State<AuthScreen> {
                                                       return null;
                                                     },
                                                   ),
+                                                  TextFormField(
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      hintText:
+                                                          'Enter Handle Name',
+                                                    ),
+                                                    controller: _handlenameCon,
+                                                    validator: (value) {
+                                                      if (value == null ||
+                                                          value.isEmpty) {
+                                                        return 'Please enter Handle Name';
+                                                      }
+                                                      return null;
+                                                    },
+                                                  ),
                                                   ElevatedButton(
                                                     onPressed: (_formKey
                                                                 .currentState
@@ -363,6 +385,10 @@ class _AuthScreenState extends State<AuthScreen> {
                                                                         .trim(),
                                                                 username:
                                                                     _usernameCon
+                                                                        .text
+                                                                        .trim(),
+                                                                handle:
+                                                                    _handlenameCon
                                                                         .text
                                                                         .trim());
                                                           }
@@ -385,7 +411,10 @@ class _AuthScreenState extends State<AuthScreen> {
                                                                     false)
                                                                 ? Colors
                                                                     .lightBlueAccent
-                                                                : Theme.of(context).colorScheme.onSurface),
+                                                                : Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .onSurface),
                                                     child: Text('Register',
                                                         style:
                                                             GoogleFonts.poppins(

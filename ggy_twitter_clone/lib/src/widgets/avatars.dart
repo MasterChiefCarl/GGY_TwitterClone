@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ggy_twitter_clone/src/models/chat_user_model.dart';
+import 'package:ggy_twitter_clone/src/models/user_account_model.dart';
 
 
 class UserNameFromDB extends StatelessWidget {
@@ -9,9 +9,9 @@ class UserNameFromDB extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ChatUser>(
-        stream: ChatUser.fromUidStream(uid: uid),
-        builder: (context, AsyncSnapshot<ChatUser?> snap) {
+    return StreamBuilder<AccUser>(
+        stream: AccUser.fromUidStream(uid: uid),
+        builder: (context, AsyncSnapshot<AccUser?> snap) {
           if (snap.error != null || !snap.hasData) {
             return const Text('. . .');
           } else {
@@ -28,9 +28,9 @@ class EmailFromDB extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ChatUser>(
-        stream: ChatUser.fromUidStream(uid: uid),
-        builder: (context, AsyncSnapshot<ChatUser?> snap) {
+    return StreamBuilder<AccUser>(
+        stream: AccUser.fromUidStream(uid: uid),
+        builder: (context, AsyncSnapshot<AccUser?> snap) {
           if (snap.error != null || !snap.hasData) {
             return const Text('. . .');
           } else {
@@ -41,6 +41,27 @@ class EmailFromDB extends StatelessWidget {
   }
 }
 
+class HandleFromDB extends StatelessWidget {
+  final String uid;
+  final double fontSize;
+  const HandleFromDB({required this.uid, Key? key, this.fontSize = 15})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<AccUser>(
+        stream: AccUser.fromUidStream(uid: uid),
+        builder: (context, AsyncSnapshot<AccUser?> snap) {
+          if (snap.error != null || !snap.hasData) {
+            return const Text('. . .');
+          } else {
+            return Text(snap.data!.handle,
+                style: TextStyle(fontSize: fontSize));
+          }
+        });
+  }
+}
+
+
 
 class AvatarImage extends StatelessWidget {
   final String uid;
@@ -49,9 +70,9 @@ class AvatarImage extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ChatUser>(
-        stream: ChatUser.fromUidStream(uid: uid),
-        builder: (context, AsyncSnapshot<ChatUser?> snap) {
+    return StreamBuilder<AccUser>(
+        stream: AccUser.fromUidStream(uid: uid),
+        builder: (context, AsyncSnapshot<AccUser?> snap) {
           if (snap.error != null || !snap.hasData) {
             return CircleAvatar(
               radius: radius,
@@ -94,9 +115,9 @@ class AvatarImage extends StatelessWidget {
 //       : super(key: key);
 //   @override
 //   Widget build(BuildContext context) {
-//     return StreamBuilder<ChatUser>(
-//         stream: ChatUser.fromUidStream(uid: uid),
-//         builder: (context, AsyncSnapshot<ChatUser?> snap) {
+//     return StreamBuilder<AccUser>(
+//         stream: AccUser.fromUidStream(uid: uid),
+//         builder: (context, AsyncSnapshot<AccUser?> snap) {
 //           if (snap.error != null || !snap.hasData) {
 //             return CircleAvatar(
 //               radius: radius,
