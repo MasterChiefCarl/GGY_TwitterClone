@@ -15,7 +15,28 @@ class Post {
   late bool likedByUser;
   late bool sharedByUser;
 
-  Post({DateTime? created}) {
+  Post(
+      {DateTime? created,
+      String? title,
+      String? body,
+      String? userId,
+      String? postId,
+      String? imageUrl,
+      int? likes,
+      int? shares,
+      bool? likedByUser,
+      bool? sharedByUser}) {
+    this.created = created ?? DateTime.now();
+    this.title = title ?? "Post by ${userId}";
+    this.body = body ?? "";
+    this.userId = userId ?? "";
+    this.postId = postId ?? "";
+    this.imageUrl = imageUrl ?? "";
+    this.likes = likes ?? 0;
+    this.shares = shares ?? 0;
+    this.likedByUser = likedByUser ?? false;
+    this.sharedByUser = sharedByUser ?? false;
+
     created = DateTime.now();
   }
 
