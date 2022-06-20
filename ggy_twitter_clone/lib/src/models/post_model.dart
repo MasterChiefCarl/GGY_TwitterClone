@@ -14,6 +14,7 @@ class Post {
   late int shares;
   late bool likedByUser;
   late bool sharedByUser;
+  late String originalPoster;
 
   Post(
       {DateTime? created,
@@ -22,6 +23,7 @@ class Post {
       String? userId,
       String? postId,
       String? imageUrl,
+      String? originalPoster,
       int? likes,
       int? shares,
       bool? likedByUser,
@@ -36,6 +38,7 @@ class Post {
     this.shares = shares ?? 0;
     this.likedByUser = likedByUser ?? false;
     this.sharedByUser = sharedByUser ?? false;
+    this.originalPoster = originalPoster ?? "";
 
     created = DateTime.now();
   }
@@ -60,9 +63,11 @@ class Post {
   likePost() {
     if (likedByUser == false) {
       likes++;
+      likedByUser = true;
       print('user liked this post');
     } else {
       likes--;
+      likedByUser = false;
       print('user unliked this post');
     }
   }
@@ -70,9 +75,11 @@ class Post {
   sharePost() {
     if (sharedByUser == false) {
       shares++;
+      sharedByUser = true;
       print("user shared the post");
     } else {
       shares--;
+      sharedByUser = false;
       print("user unshared the post");
     }
   }
