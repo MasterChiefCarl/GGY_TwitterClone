@@ -108,7 +108,7 @@ class _HomePageState extends State<navHomePage> {
                                                 postIter.userId.toString(),
                                             body: postIter.body.toString(),
                                             shares: postIter.shares + 1,
-                                            likes: postIter.likes + 1,
+                                            likes: postIter.likes,
                                             imageUrl:
                                                 postIter.imageUrl.toString()),
                                       );
