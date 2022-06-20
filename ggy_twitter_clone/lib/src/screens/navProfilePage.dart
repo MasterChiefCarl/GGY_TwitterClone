@@ -108,8 +108,7 @@ class _profileState extends State<navProfilePage> {
                 ElevatedButton(
                   onPressed: () {
                     _editUsername();
-                    setState(() {
-                    });
+                    setState(() {});
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -131,8 +130,7 @@ class _profileState extends State<navProfilePage> {
                 ElevatedButton(
                   onPressed: () {
                     _editHandlename();
-                    setState(() {
-                    });
+                    setState(() {});
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -247,11 +245,13 @@ class _profileState extends State<navProfilePage> {
                 TextButton(
                     onPressed: () {
                       ImageService.updateProfileImagegallery();
+                      Navigator.of(context).pop();
                     },
                     child: const Text('Select Image From Galley')),
                 TextButton(
                     onPressed: () {
                       ImageService.updateProfileImagecamera();
+                      Navigator.of(context).pop();
                     },
                     child: const Text('Select Image From Camera')),
               ],
