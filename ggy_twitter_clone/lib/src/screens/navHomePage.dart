@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, unused_import, unnecessary_late, use_key_in_widget_constructors, camel_case_types
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -83,8 +85,7 @@ class _HomePageState extends State<navHomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             if (postIter.sharedByUser == true)
-                              Text("Shared from: " +
-                                  postIter.originalPoster.toString()),
+                              Text("Shared from: ${postIter.originalPoster}"),
                             Text(postIter.body.toString()),
                             if (postIter.imageUrl != "")
                               Image.network(
@@ -99,11 +100,7 @@ class _HomePageState extends State<navHomePage> {
                                       posts.add(
                                         Post(
                                             sharedByUser: true,
-                                            userId: currentUser,
-                                            //CARL! FIND A WAY TO GET THE CURRRENT
-                                            //LOGGED IN USER AND PUT IT HERE!
-                                            //REPLACE currentUser with THE CURRENT
-                                            //USER BY MAKING OR CALLING A FUNCTION
+                                            userId: FirebaseAuth.instance.currentUser!.uid,
                                             originalPoster:
                                                 postIter.userId.toString(),
                                             body: postIter.body.toString(),
@@ -115,21 +112,21 @@ class _HomePageState extends State<navHomePage> {
 
                                       setState(() {});
                                     },
-                                    icon: Icon(Icons.share)),
+                                    icon: const Icon(Icons.share)),
                                 IconButton(
                                     onPressed: () {
                                       postIter.likePost();
                                       setState(() {});
                                     },
-                                    icon: Icon(Icons.star))
+                                    icon: const Icon(Icons.star))
                               ],
                             )
                           ]),
                       trailing: Column(
                         children: <Widget>[
-                          Text(" "),
-                          Text(postIter.likes.toString() + ' likes'),
-                          Text(postIter.shares.toString() + ' shares'),
+                          const Text(" "),
+                          Text('${postIter.likes} likes'),
+                          Text('${postIter.shares} shares'),
                         ],
                       )),
               ])),

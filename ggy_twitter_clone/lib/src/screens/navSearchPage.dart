@@ -32,7 +32,6 @@ class _SearchPageState extends State<navSearchPage>{
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
                         color:   const Color(0xff7b7b7b),
-
                       )),
                     ),
                   ),

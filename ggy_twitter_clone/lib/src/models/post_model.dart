@@ -29,7 +29,7 @@ class Post {
       bool? likedByUser,
       bool? sharedByUser}) {
     this.created = created ?? DateTime.now();
-    this.title = title ?? "Post by ${userId}";
+    this.title = title ?? "Post by $userId";
     this.body = body ?? "";
     this.userId = userId ?? "";
     this.postId = postId ?? "";

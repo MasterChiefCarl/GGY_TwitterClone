@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:ggy_twitter_clone/service_locators.dart';
 import 'package:ggy_twitter_clone/src/controllers/auth_controllers.dart';
@@ -10,6 +9,7 @@ class ChatEditingDialog extends StatefulWidget {
   @override
   State<ChatEditingDialog> createState() => _ChatEditingDialogState();
 }
+
 class _ChatEditingDialogState extends State<ChatEditingDialog> {
   late TextEditingController tCon;
   @override
@@ -17,6 +17,7 @@ class _ChatEditingDialogState extends State<ChatEditingDialog> {
     tCon = TextEditingController(text: widget.chat.message);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -26,7 +27,7 @@ class _ChatEditingDialogState extends State<ChatEditingDialog> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-             Flexible(
+            Flexible(
                 flex: 2,
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
@@ -35,7 +36,9 @@ class _ChatEditingDialogState extends State<ChatEditingDialog> {
             Flexible(
               flex: 5,
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10, ),
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
                 child: TextFormField(
                   maxLines: 1,
                   onFieldSubmitted: (String text) {
@@ -90,30 +93,34 @@ class _ChatEditingDialogState extends State<ChatEditingDialog> {
     );
   }
 }
+
 class UsernameEditingDialog extends StatefulWidget {
   final String uid;
   const UsernameEditingDialog({required this.uid, Key? key}) : super(key: key);
   @override
   State<UsernameEditingDialog> createState() => _UsernameEditingDialogState();
 }
+
 class _UsernameEditingDialogState extends State<UsernameEditingDialog> {
   final AuthController _auth = locator<AuthController>();
   late TextEditingController tCon;
   @override
   initState() {
-    tCon = TextEditingController(text: "" );
+    tCon = TextEditingController(text: "");
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-             Flexible(
+            Flexible(
                 flex: 2,
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
@@ -122,7 +129,9 @@ class _UsernameEditingDialogState extends State<UsernameEditingDialog> {
             Flexible(
               flex: 5,
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10, ),
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
                 child: TextFormField(
                   maxLines: 1,
                   onFieldSubmitted: (String text) {
@@ -166,7 +175,8 @@ class _UsernameEditingDialogState extends State<UsernameEditingDialog> {
                   ),
                 ),
                 onTap: () {
-                    _auth.updateUsername(uid: widget.uid, newUsername: tCon.text.trim());
+                  _auth.updateUsername(
+                      uid: widget.uid, newUsername: tCon.text.trim());
                   Navigator.of(context).pop();
                 },
               ),
@@ -177,30 +187,36 @@ class _UsernameEditingDialogState extends State<UsernameEditingDialog> {
     );
   }
 }
+
 class HandleNameEditingDialog extends StatefulWidget {
   final String uid;
-  const HandleNameEditingDialog({required this.uid, Key? key}) : super(key: key);
+  const HandleNameEditingDialog({required this.uid, Key? key})
+      : super(key: key);
   @override
-  State<HandleNameEditingDialog> createState() => _HandleNameEditingDialogState();
+  State<HandleNameEditingDialog> createState() =>
+      _HandleNameEditingDialogState();
 }
+
 class _HandleNameEditingDialogState extends State<HandleNameEditingDialog> {
   final AuthController _auth = locator<AuthController>();
   late TextEditingController tCon;
   @override
   initState() {
-    tCon = TextEditingController(text: "" );
+    tCon = TextEditingController(text: "");
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-             Flexible(
+            Flexible(
                 flex: 2,
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
@@ -209,12 +225,15 @@ class _HandleNameEditingDialogState extends State<HandleNameEditingDialog> {
             Flexible(
               flex: 5,
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10, ),
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
                 child: TextFormField(
                   maxLines: 1,
-                  onFieldSubmitted: (String text) async{
-                     await _auth.updateHandle(uid: widget.uid, newHandle: text);
-                    Navigator.of(context).pop();
+                  onFieldSubmitted: (String text) async {
+                    await _auth
+                        .updateHandle(uid: widget.uid, newHandle: text)
+                        .then((value) => Navigator.of(context).pop());
                   },
                   controller: tCon,
                   decoration: const InputDecoration(
@@ -253,8 +272,10 @@ class _HandleNameEditingDialogState extends State<HandleNameEditingDialog> {
                   ),
                 ),
                 onTap: () async {
-                    await _auth.updateHandle(uid: widget.uid, newHandle:tCon.text.trim());
-                  Navigator.of(context).pop();
+                  await _auth
+                      .updateHandle(
+                          uid: widget.uid, newHandle: tCon.text.trim())
+                      .then((value) => Navigator.of(context).pop());
                 },
               ),
             )

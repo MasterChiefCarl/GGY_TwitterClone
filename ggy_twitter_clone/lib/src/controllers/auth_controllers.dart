@@ -142,4 +142,5 @@ class AuthController with ChangeNotifier {
       'username': newUsername
     });
   }
+  
 }

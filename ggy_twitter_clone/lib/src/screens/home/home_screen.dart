@@ -59,13 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: BoxDecoration( //customization to the bottom bar
           color: Colors.white,
           borderRadius: BorderRadius.circular(25),
-          // boxShadow: [
-          //   BoxShadow(
-          //       color: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
-          //       spreadRadius: 2,
-          //       blurRadius: 7,
-          //       offset: const Offset(3, 3)),
-          // ],
           border: Border.all(width: 1, color: Colors.white)
         ),
         child: BottomAppBar(
@@ -98,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           });
                         }),
                     IconBottomBar(
-                        text: "Calendar",
+                        text: "Profile",
                         icon: Icons.person,
                         selected: _selectedIndex == 2,
                         onPressed: () {
