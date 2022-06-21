@@ -1,12 +1,17 @@
 //start of post_model.dart
 
 //import simple_moment
-
+import 'dart:ffi';
+import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:ggy_twitter_clone/src/widgets/avatars.dart';
 import 'package:simple_moment/simple_moment.dart';
 
 class Post {
   late String title,body,userId,postId, imageUrl;
   late DateTime created;
+  late String posterUid;
   late int likes;
   late int shares;
   late bool likedByUser;
@@ -14,9 +19,11 @@ class Post {
   late String originalPoster;
   late String createdParsed;
   late Map<String, String> comments;
+  late Widget newSharer;
 
   Post(
       {DateTime? created,
+      String? posterUid,
       String? title,
       String? body,
       String? userId,
@@ -27,21 +34,25 @@ class Post {
       int? likes,
       int? shares,
       bool? likedByUser,
-      bool? sharedByUser}) {
+      bool? sharedByUser,
+      Widget? newSharer}) {
     this.created = created ?? DateTime.now();
-    this.title = title ?? "Post by $userId";
+    this.posterUid = posterUid ?? "Unknown";
+    this.title = title ?? "This is a shared post";
     this.body = body ?? "";
     this.userId = userId ?? "";
-    this.postId = postId ?? "";
+    this.postId = postId ?? Random.secure().nextInt(8797797).toString();
     this.imageUrl = imageUrl ?? "";
     this.likes = likes ?? 0;
     this.shares = shares ?? 0;
     this.likedByUser = likedByUser ?? false;
     this.sharedByUser = sharedByUser ?? false;
     this.originalPoster = originalPoster ?? "";
+    this.newSharer = newSharer ?? const Text("");
 
     this.createdParsed = createdParsed ??
         Moment.fromDateTime(DateTime.now()).format('hh:mm a MMMM dd, yyyy ');
+    _pushToFirestore();
   }
 
   String get parsedDate {
@@ -91,6 +102,13 @@ class Post {
     }
   }
 
+  void _pushToFirestore() async {
+    await FirebaseFirestore.instance
+        .collection("posts")
+        .doc(this.postId)
+        .set(this.toJson());
+  }
+
   toJson() {
     return {
       'title': title,
@@ -110,5 +128,27 @@ class Post {
       title = titleUpdate;
     }
     print("post updated with $title and $body");
+  }
+
+//function that pushes the post to firestore
+  Future<void> pushPost(String? postId, String title, String body,
+      String userId, String imageUrl, String posterUid) async {
+    await FirebaseFirestore.instance.collection('posts').doc(postId).set({
+      'title': title,
+      'body': body,
+      'userId': userId,
+      'postId': postId ?? "",
+      'imageUrl': imageUrl,
+      'created': DateTime.now().toIso8601String(),
+      'posterUid': posterUid,
+      'likes': 0,
+      'shares': 0,
+      'likedByUser': false,
+      'sharedByUser': false,
+      'originalPoster': posterUid,
+      'createdParsed':
+          Moment.fromDateTime(created).format('hh:mm a MMMM dd, yyyy '),
+      'comments': {},
+    });
   }
 }
