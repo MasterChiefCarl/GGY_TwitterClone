@@ -21,6 +21,27 @@ class UserNameFromDB extends StatelessWidget {
   }
 }
 
+class UserNameShareFromDB extends StatelessWidget {
+  final String uid;
+  final double fontSize;
+  const UserNameShareFromDB({required this.uid, Key? key, this.fontSize = 15})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<AccUser>(
+        stream: AccUser.fromUidStream(uid: uid),
+        builder: (context, AsyncSnapshot<AccUser?> snap) {
+          if (snap.error != null || !snap.hasData) {
+            return const Text('. . .');
+          } else {
+            return Text("@" + snap.data!.username,
+                style:
+                    TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold));
+          }
+        });
+  }
+}
+
 class EmailFromDB extends StatelessWidget {
   final String uid;
   final double fontSize;

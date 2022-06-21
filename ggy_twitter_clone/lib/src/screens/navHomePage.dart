@@ -2,18 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:ggy_twitter_clone/src/widgets/avatars.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ggy_twitter_clone/src/models/user_account_model.dart';
 import '../models/post_model.dart';
 
 //import post_model.dart
-final String firebaseUID = FirebaseAuth.instance.currentUser!.uid;
 
-String? currUsr = FirebaseFirestore.instance
-    .collection('users')
-    .doc(FirebaseAuth.instance.currentUser!.uid)
-    .get()
-    .toString();
+String currUsr = FirebaseAuth.instance.currentUser!.uid;
 
 class navHomePage extends StatefulWidget {
   @override
@@ -26,9 +22,10 @@ class _HomePageState extends State<navHomePage> {
     Post(
       title: "My Post",
       body: "This is my post",
-      userId: currUsr,
+      posterUid: currUsr,
+      userId: "@daryll_gomez",
       postId: "1",
-      imageUrl: "https://picsum.photos/200/300",
+      imageUrl: "https://placekitten.com/640/360",
       likes: 32,
     ),
     Post(
@@ -43,9 +40,33 @@ class _HomePageState extends State<navHomePage> {
         imageUrl:
             "https://cdn.vox-cdn.com/thumbor/b0PmAywJc1nLA9vUkyJo5-jFmBE=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/23633427/GettyImages_1395371342.jpg"),
   ];
+
+  /* var fb = FirebaseFirestore.instance
+      .collection('posts')
+      .snapshots()
+      .listen((snapshot) {
+    for (var doc in snapshot.docs) {
+      var temp = Post(
+          created: doc.data()['created'],
+          posterUid: doc.data()['posterUid'],
+          title: doc.data()['title'],
+          body: doc.data()['body'],
+          userId: doc.data()['userId'],
+          postId: doc.data()['postId'],
+          imageUrl: doc.data()['imageUrl'],
+          originalPoster: doc.data()['originalPoster'],
+          createdParsed: doc.data()['createdParsed'],
+          likes: doc.data()['likes']);
+      postsf.add(temp);
+    }
+  } */
+
+//iterate through the posts array and push to firestore
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
         //add a new post button on the button right with dialog
         floatingActionButton: FloatingActionButton(onPressed: () {
           showDialog(
@@ -117,10 +138,12 @@ class _HomePageState extends State<navHomePage> {
                   for (Post postIter in posts)
                     ListTile(
                         //leading: Text(postIter.userId.toString()),
+
                         title: Text(postIter.userId.toString()),
                         subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              postIter.newSharer,
                               Text(postIter.createdParsed.toString()),
                               Text(""),
                               if (postIter.sharedByUser == true)
@@ -142,11 +165,15 @@ class _HomePageState extends State<navHomePage> {
                                         posts.add(
                                           Post(
                                               sharedByUser: true,
-                                              userId: currUsr,
+                                              newSharer: UserNameFromDB(
+                                                  uid: FirebaseAuth.instance
+                                                      .currentUser!.uid),
                                               //CARL! FIND A WAY TO GET THE CURRRENT
                                               //LOGGED IN USER AND PUT IT HERE!
                                               //REPLACE currentUser with THE CURRENT
                                               //USER BY MAKING OR CALLING A FUNCTION
+                                              posterUid: currUsr,
+                                              userId: null,
                                               originalPoster:
                                                   postIter.userId.toString(),
                                               body: postIter.body.toString(),
@@ -165,7 +192,7 @@ class _HomePageState extends State<navHomePage> {
                                         setState(() {});
                                       },
                                       icon: Icon(Icons.star)),
-                                  if (postIter.userId == currUsr) //FIX THIS!
+                                  if (postIter.posterUid == currUsr) //FIX THIS!
                                     IconButton(
                                         icon: Icon(Icons.delete),
                                         onPressed: () {
@@ -196,7 +223,7 @@ class _HomePageState extends State<navHomePage> {
                                                 );
                                               });
                                         }),
-                                  if (postIter.userId == currUsr)
+                                  if (postIter.posterUid == currUsr)
                                     IconButton(
                                         onPressed: () {
                                           //show edit dialog
