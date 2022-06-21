@@ -1,6 +1,8 @@
 //start of post_model.dart
 
 //import simple_moment
+import 'dart:ffi';
+
 import 'package:simple_moment/simple_moment.dart';
 
 class Post {
@@ -15,6 +17,8 @@ class Post {
   late bool likedByUser;
   late bool sharedByUser;
   late String originalPoster;
+  late String createdParsed;
+  late Map<String, String> comments;
 
   Post(
       {DateTime? created,
@@ -24,6 +28,7 @@ class Post {
       String? postId,
       String? imageUrl,
       String? originalPoster,
+      String? createdParsed,
       int? likes,
       int? shares,
       bool? likedByUser,
@@ -40,7 +45,8 @@ class Post {
     this.sharedByUser = sharedByUser ?? false;
     this.originalPoster = originalPoster ?? "";
 
-    created = DateTime.now();
+    this.createdParsed = createdParsed ??
+        Moment.fromDateTime(DateTime.now()).format('hh:mm a MMMM dd, yyyy ');
   }
 
   String get parsedDate {
@@ -70,6 +76,12 @@ class Post {
       likedByUser = false;
       print('user unliked this post');
     }
+  }
+
+  clear() {
+    title = "";
+    body = "";
+    imageUrl = "";
   }
 
   sharePost() {

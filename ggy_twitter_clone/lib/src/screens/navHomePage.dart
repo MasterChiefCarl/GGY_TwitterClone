@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 // ignore_for_file: file_names, unused_import, unnecessary_late, use_key_in_widget_constructors, camel_case_types
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,37 +10,25 @@ import '../models/post_model.dart';
 
 //import post_model.dart
 final String firebaseUID = FirebaseAuth.instance.currentUser!.uid;
-late String currentUser = UserNameFromDB(uid: firebaseUID).toString();
+
+String? currUsr = FirebaseFirestore.instance
+    .collection('users')
+    .doc(FirebaseAuth.instance.currentUser!.uid)
+    .get()
+    .toString();
 
 class navHomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class UserNameFromDB extends StatelessWidget {
-  final String uid;
-  const UserNameFromDB({required this.uid});
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<AccUser>(
-        stream: AccUser.fromUidStream(uid: uid),
-        builder: (context, AsyncSnapshot<AccUser?> snap) {
-          if (snap.error != null || !snap.hasData) {
-            return const Text('. . .');
-          } else {
-            currentUser = snap.data!.username.toString();
-            return Text(snap.data!.username.toString());
-          }
-        });
-  }
-}
-
 class _HomePageState extends State<navHomePage> {
+  Post tempPost = Post();
   List<Post> posts = [
     Post(
       title: "My Post",
       body: "This is my post",
-      userId: "@daryll_gomez",
+      userId: currUsr,
       postId: "1",
       imageUrl: "https://picsum.photos/200/300",
       likes: 32,
@@ -59,81 +48,206 @@ class _HomePageState extends State<navHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(children: [
-            SizedBox(
-              height: 25,
-              width: 200,
-              child: Center(
-                child: Text('Home',
-                    style: GoogleFonts.quicksand(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xff7b7b7b),
-                    )),
-              ),
-            ),
-            Container(
-              child: Center(
-                  child: Column(children: [
-                for (Post postIter in posts)
-                  ListTile(
-                      //leading: Text(postIter.userId.toString()),
-                      title: Text(postIter.userId.toString()),
-                      subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (postIter.sharedByUser == true)
-                              Text("Shared from: ${postIter.originalPoster}"),
-                            Text(postIter.body.toString()),
-                            if (postIter.imageUrl != "")
-                              Image.network(
-                                postIter.imageUrl,
-                                height: 400,
-                                width: 400,
-                              ),
-                            Row(
-                              children: [
-                                IconButton(
-                                    onPressed: () {
-                                      posts.add(
-                                        Post(
-                                            sharedByUser: true,
-                                            userId: FirebaseAuth.instance.currentUser!.uid,
-                                            originalPoster:
-                                                postIter.userId.toString(),
-                                            body: postIter.body.toString(),
-                                            shares: postIter.shares + 1,
-                                            likes: postIter.likes,
-                                            imageUrl:
-                                                postIter.imageUrl.toString()),
-                                      );
-
-                                      setState(() {});
-                                    },
-                                    icon: const Icon(Icons.share)),
-                                IconButton(
-                                    onPressed: () {
-                                      postIter.likePost();
-                                      setState(() {});
-                                    },
-                                    icon: const Icon(Icons.star))
-                              ],
-                            )
-                          ]),
-                      trailing: Column(
+        //add a new post button on the button right with dialog
+        floatingActionButton: FloatingActionButton(onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    //show three text fields for title, body, and image url
+                    content: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          const Text(" "),
-                          Text('${postIter.likes} likes'),
-                          Text('${postIter.shares} shares'),
-                        ],
+                      TextField(
+                        onChanged: (value) {
+                          tempPost.title = value;
+                        },
+                        decoration: InputDecoration(
+                          labelText: "Title",
+                        ),
+                      ),
+                      TextField(
+                        onChanged: (value) {
+                          tempPost.body = value;
+                        },
+                        decoration: InputDecoration(
+                          labelText: "Body",
+                        ),
+                      ),
+                      TextField(
+                        onChanged: (value) {
+                          tempPost.imageUrl = value;
+                        },
+                        decoration: InputDecoration(
+                          labelText: "Image URL",
+                        ),
+                      ),
+                      RaisedButton(
+                          child: Text("Post"),
+                          onPressed: () {
+                            //add the post to the list of posts
+                            posts.add(Post(
+                                body: tempPost.body.toString(),
+                                title: tempPost.title.toString(),
+                                imageUrl: tempPost.imageUrl.toString(),
+                                userId: currUsr));
+                            tempPost.clear();
+                            setState(() {});
+                            Navigator.pop(context);
+                          })
+                    ]));
+              });
+        }),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(children: [
+              SizedBox(
+                height: 25,
+                width: 200,
+                child: Center(
+                  child: Text('Home',
+                      style: GoogleFonts.quicksand(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xff7b7b7b),
                       )),
-              ])),
-            ),
-          ]),
-        ),
-      ),
-    );
+                ),
+              ),
+              Container(
+                child: Center(
+                    child: Column(children: [
+                  for (Post postIter in posts)
+                    ListTile(
+                        //leading: Text(postIter.userId.toString()),
+                        title: Text(postIter.userId.toString()),
+                        subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(postIter.createdParsed.toString()),
+                              Text(""),
+                              if (postIter.sharedByUser == true)
+                                Text("Shared from: " +
+                                    postIter.originalPoster.toString()),
+                              Text(postIter.body.toString()),
+                              Text(""),
+                              if (postIter.imageUrl != "")
+                                Image.network(
+                                  alignment: Alignment.topLeft,
+                                  postIter.imageUrl,
+                                  height: 200,
+                                  width: 300,
+                                ),
+                              Row(
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        posts.add(
+                                          Post(
+                                              sharedByUser: true,
+                                              userId: currUsr,
+                                              //CARL! FIND A WAY TO GET THE CURRRENT
+                                              //LOGGED IN USER AND PUT IT HERE!
+                                              //REPLACE currentUser with THE CURRENT
+                                              //USER BY MAKING OR CALLING A FUNCTION
+                                              originalPoster:
+                                                  postIter.userId.toString(),
+                                              body: postIter.body.toString(),
+                                              shares: postIter.shares + 1,
+                                              likes: postIter.likes,
+                                              imageUrl:
+                                                  postIter.imageUrl.toString()),
+                                        );
+
+                                        setState(() {});
+                                      },
+                                      icon: Icon(Icons.share)),
+                                  IconButton(
+                                      onPressed: () {
+                                        postIter.likePost();
+                                        setState(() {});
+                                      },
+                                      icon: Icon(Icons.star)),
+                                  if (postIter.userId == currUsr) //FIX THIS!
+                                    IconButton(
+                                        icon: Icon(Icons.delete),
+                                        onPressed: () {
+                                          //show confirmation dialog before deleting
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title: Text("Delete Post"),
+                                                  content: Text(
+                                                      "Are you sure you want to delete this post?"),
+                                                  actions: [
+                                                    FlatButton(
+                                                      child: Text("Cancel"),
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                    FlatButton(
+                                                      child: Text("Delete"),
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                        posts.remove(postIter);
+                                                        setState(() {});
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                        }),
+                                  if (postIter.userId == currUsr)
+                                    IconButton(
+                                        onPressed: () {
+                                          //show edit dialog
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title: Text("Edit Post"),
+                                                  content: TextField(
+                                                    decoration: InputDecoration(
+                                                      labelText: "Edit Post",
+                                                    ),
+                                                    onChanged: (value) {
+                                                      postIter.body = value;
+                                                    },
+                                                  ),
+                                                  actions: [
+                                                    FlatButton(
+                                                      child: Text("Cancel"),
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                    FlatButton(
+                                                      child: Text("Edit"),
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                        setState(() {});
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                        },
+                                        icon: Icon(Icons.edit))
+                                ],
+                              )
+                            ]),
+                        trailing: Column(
+                          children: <Widget>[
+                            Text(" "),
+                            Text(postIter.likes.toString() + ' likes'),
+                            Text(postIter.shares.toString() + ' shares'),
+                          ],
+                        )),
+                ])),
+              ),
+            ]),
+          ),
+        ));
   }
 }
