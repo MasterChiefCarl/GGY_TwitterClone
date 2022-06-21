@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ggy_twitter_clone/src/models/user_account_model.dart';
 
-
 class UserNameFromDB extends StatelessWidget {
   final String uid;
   final double fontSize;
@@ -21,6 +20,7 @@ class UserNameFromDB extends StatelessWidget {
         });
   }
 }
+
 class EmailFromDB extends StatelessWidget {
   final String uid;
   final double fontSize;
@@ -34,8 +34,7 @@ class EmailFromDB extends StatelessWidget {
           if (snap.error != null || !snap.hasData) {
             return const Text('. . .');
           } else {
-            return Text(snap.data!.email,
-                style: TextStyle(fontSize: fontSize));
+            return Text(snap.data!.email, style: TextStyle(fontSize: fontSize));
           }
         });
   }
@@ -60,8 +59,6 @@ class HandleFromDB extends StatelessWidget {
         });
   }
 }
-
-
 
 class AvatarImage extends StatelessWidget {
   final String uid;
@@ -108,6 +105,8 @@ class AvatarImage extends StatelessWidget {
         });
   }
 }
+
+
 // class SquareAvatarImage extends StatelessWidget {
 //   final String uid;
 //   final double radius;
