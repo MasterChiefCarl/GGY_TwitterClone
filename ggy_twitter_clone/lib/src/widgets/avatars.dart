@@ -107,48 +107,4 @@ class AvatarImage extends StatelessWidget {
 }
 
 
-// class SquareAvatarImage extends StatelessWidget {
-//   final String uid;
-//   final double radius;
-//   const SquareAvatarImage({required this.uid, this.radius = 50, Key? key})
-//       : super(key: key);
-//   @override
-//   Widget build(BuildContext context) {
-//     return StreamBuilder<AccUser>(
-//         stream: AccUser.fromUidStream(uid: uid),
-//         builder: (context, AsyncSnapshot<AccUser?> snap) {
-//           if (snap.error != null || !snap.hasData) {
-//             return CircleAvatar(
-//               radius: radius,
-//               backgroundColor: Colors.grey,
-//               child: Icon(
-//                 Icons.person,
-//                 color: Colors.white,
-//                 size: radius * .95,
-//               ),
-//             );
-//           } else {
-//             if (snap.data!.image.isEmpty) {
-//               return CircleAvatar(
-//                 radius: radius,
-//                 backgroundColor: Colors.grey,
-//                 child: Icon(
-//                   Icons.person,
-//                   color: Colors.white,
-//                   size: radius * .95,
-//                 ),
-//               );
-//             } else {
-//               return CircleAvatar(
-//                 radius: radius,
-//                 backgroundColor: Colors.grey,
-//                 child: ClipRRect(
-//                   borderRadius: BorderRadius.circular(50.0),
-//                   child: Image.network(snap.data!.image),
-//                 ),
-//               );
-//             }
-//           }
-//         });
-//   }
-// }
+

@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       restorationScopeId: 'app',
       theme: ThemeData(
-          primaryColor: Colors.orange,
+          primaryColor: Colors.lightBlueAccent,
           scaffoldBackgroundColor: Colors.white,
           textTheme:  const TextTheme(
             headline1: TextStyle(

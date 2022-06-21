@@ -83,16 +83,13 @@ class AuthController with ChangeNotifier {
       required String username,
       required String handle}) async {
     try {
-      var generator = RandomStringGenerator(
-        fixedLength: 4,
-      );
       working = true;
       notifyListeners();
       UserCredential createdUser = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       if (createdUser.user != null) {
         AccUser userModel = AccUser(createdUser.user!.uid, username, email, '',
-            '$handle*${generator.generate()}', Timestamp.now(), Timestamp.now());
+            handle, Timestamp.now(), Timestamp.now());
 
         errorS = "Created account Sucessfully! Logging In....";
         return FirebaseFirestore.instance
@@ -141,6 +138,11 @@ class AuthController with ChangeNotifier {
     return FirebaseFirestore.instance.collection('users').doc(uid).update({
       'username': newUsername
     });
+  }
+
+  String showUserName ({required String uid}){
+    
+    return " ";
   }
   
 }

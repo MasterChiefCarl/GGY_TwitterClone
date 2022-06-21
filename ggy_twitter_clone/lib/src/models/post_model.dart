@@ -1,16 +1,11 @@
 //start of post_model.dart
 
 //import simple_moment
-import 'dart:ffi';
 
 import 'package:simple_moment/simple_moment.dart';
 
 class Post {
-  late String title;
-  late String body;
-  late String userId;
-  late String postId;
-  late String imageUrl;
+  late String title,body,userId,postId, imageUrl;
   late DateTime created;
   late int likes;
   late int shares;
